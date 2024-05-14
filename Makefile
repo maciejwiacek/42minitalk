@@ -3,34 +3,31 @@ SRCS = server.c \
 
 OBJS := $(SRCS:.c=.o)
 
-NAME = minitalk.a
+CC = cc
 
-CC = gcc
+CFLAGS += -Wall -Werror -Wextra
 
-#CFLAGS += -Wall -Werror -Wextra
+all: library server client
 
-all: $(NAME)
+library:
+	make -C Libftprintf
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-${NAME}: server client
-
 server:		server.o
-		${CC} ${CFLAGS} $? -o server
+		${CC} ${CFLAGS} $? Libftprintf/libftprintf.a -o server
 
 client:		client.o
-		${CC} ${CFLAGS} $? -o client
-
-# $(NAME): $(OBJS)
-# 	ar rcs $(NAME) $(OBJS)
+		${CC} ${CFLAGS} $? Libftprintf/libftprintf.a -o client
 
 clean:
 	rm -f $(OBJS)
+	make clean -C Libftprintf
 
 fclean: clean
-	rm -f $(NAME)
 	rm -f client
 	rm -f server
+	make fclean -C Libftprintf
 
 re: fclean all

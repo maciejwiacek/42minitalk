@@ -6,7 +6,7 @@
 /*   By: mwiacek <mwiacek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 11:22:04 by mwiacek           #+#    #+#             */
-/*   Updated: 2024/05/14 11:28:41 by mwiacek          ###   ########.fr       */
+/*   Updated: 2024/05/14 13:43:24 by mwiacek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <signal.h>
+#include "Libftprintf/includes/libft.h"
+#include "Libftprintf/includes/printf.h"
 
 void	send_message(int pid, char *str)
 {
@@ -25,14 +27,13 @@ void	send_message(int pid, char *str)
 		i = 7;
 		while (i >= 0)
 		{
-			if ((*str >> i) & 1 == 1)
+			if (((*str >> i) & 1) == 1)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
-			usleep(5000);
+			usleep(300);
 			i--;
 		}
-		usleep(5000);
 		str++;
 	}
 }
@@ -44,11 +45,11 @@ int	main(int argc, char **argv)
 
 	if (argc == 3)
 	{
-		pid = atoi(argv[1]);
-		printf("Pid is %d\n", pid);
+		pid = ft_atoi(argv[1]);
+		ft_printf("Pid is %d\n", pid);
 		if (!pid)
 		{
-			printf("Make sure you put correct PID!\n");
+			ft_printf("Make sure you put correct PID!\n");
 			return (0);
 		}
 		str = argv[2];
@@ -56,6 +57,6 @@ int	main(int argc, char **argv)
 	}
 	else
 	{
-		printf("Make sure you put PID and message!\n");
+		ft_printf("Make sure you put PID and message!\n");
 	}
 }
